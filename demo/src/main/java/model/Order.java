@@ -2,6 +2,9 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.util.Date;
 import java.util.List;
 
@@ -24,7 +27,8 @@ public class Order implements Serializable {
 	private Date date;
 
 	//bi-directional many-to-one association to OrderDetail
-	@OneToMany(mappedBy="order")
+	@OneToMany(mappedBy="order", cascade = CascadeType.ALL)
+	@JsonManagedReference
 	private List<OrderDetail> orderDetails;
 
 	//bi-directional many-to-one association to User

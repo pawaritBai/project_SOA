@@ -2,6 +2,9 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -17,6 +20,7 @@ public class Outfit implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="outfit_id")
 	private int outfitId;
 
@@ -28,7 +32,8 @@ public class Outfit implements Serializable {
 	private BigDecimal price;
 
 	//bi-directional many-to-one association to OrderDetail
-	@OneToMany(mappedBy="outfit")
+	@OneToMany(mappedBy="outfit", cascade = CascadeType.ALL)
+	@JsonManagedReference
 	private List<OrderDetail> orderDetails;
 
 	public Outfit() {

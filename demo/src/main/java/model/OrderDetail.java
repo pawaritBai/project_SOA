@@ -2,13 +2,10 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.util.Date;
 
-
-/**
- * The persistent class for the order_details database table.
- * 
- */
 @Entity
 @Table(name="order_details")
 @NamedQuery(name="OrderDetail.findAll", query="SELECT o FROM OrderDetail o")
@@ -16,6 +13,7 @@ public class OrderDetail implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY) // ✅ เพิ่ม Auto Increment
 	@Column(name="order_detail_id")
 	private int orderDetailId;
 
@@ -25,19 +23,21 @@ public class OrderDetail implements Serializable {
 	@Column(name="order_date")
 	private Date orderDate;
 
-	//bi-directional many-to-one association to Order
+	// bi-directional many-to-one association to Order
 	@ManyToOne
+	@JsonBackReference // ✅ ใช้เพื่อป้องกัน Infinite Loop
 	@JoinColumn(name="order_id")
 	private Order order;
 
-	//bi-directional many-to-one association to Outfit
+	// bi-directional many-to-one association to Outfit
 	@ManyToOne
+	@JsonBackReference // ✅ ใช้เพื่อป้องกัน Infinite Loop
 	@JoinColumn(name="outfit_id")
 	private Outfit outfit;
 
-	public OrderDetail() {
-	}
+	public OrderDetail() {}
 
+	// Getter และ Setter
 	public int getOrderDetailId() {
 		return this.orderDetailId;
 	}
@@ -77,5 +77,4 @@ public class OrderDetail implements Serializable {
 	public void setOutfit(Outfit outfit) {
 		this.outfit = outfit;
 	}
-
 }
